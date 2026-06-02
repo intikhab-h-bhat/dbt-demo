@@ -1,0 +1,37 @@
+models:
+  - name: customers_stg
+    columns:
+      - name: Email
+        tests:
+          - string_not_empty
+  
+  - name: employee_stg
+    columns:
+      - name: jobtitle
+        tests:
+        - string_not_empty
+
+
+# --- built in generic tests
+
+  - name: orders_stg
+    columns:
+      - name: orderid
+        tests:
+          - unique
+          - not_null
+      - name: StatusCD
+        tests:
+          - accepted_values:
+              arguments:
+                values: ['01','02','03']
+              
+
+  - name: orderitem_stg
+    columns:
+      - name: orderid
+        tests:
+          - relationships:
+              arguments:
+                to: ref('orders_stg')
+                field: orderid
